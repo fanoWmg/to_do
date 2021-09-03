@@ -1,0 +1,69 @@
+<odoo>
+    <data>
+        <!-- explicit list view definition -->
+        <record model="ir.ui.view" id="to_do.list">
+            <field name="name">to_do list</field>
+            <field name="model">to_do.to_do</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="user_id"/>
+                    <field name="create_date" string="Create Date"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="to_do.form">
+            <field name="name">to_do Form</field>
+            <field name="model">to_do.to_do</field>
+            <field name="arch" type="xml">
+                <form string="To Do Form">
+                    <header>
+                        <field name="state_level" invisible="1"/>
+                        <button string="Draft" type="object" name="action_draft" class="oe_highlight"
+                                attrs="{'invisible': [('state', '=', 'draft')]}"
+                        />
+                        <button string="Assign" type="object" attrs="{'invisible': [('state', '=', 'assigned')]}"
+                                name="action_assigned" class="oe_highlight"/>
+                        <!--                        <button string="Assigned" type="object" name="action_assigned" class="oe_highlight"/>-->
+                        <button string="Execute" type="object" name="action_executed" class="oe_highlight"/>
+                        <button string="Remove" type="object" name="action_removed" class="oe_highlight"
+                                attrs="{'invisible': ['|', ('state', '=', 'removed'), ('state', '=', 'draft')]}"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <group>
+                        <field name="name"/>
+                        <field name="user_id"/>
+                        <field name="model_name" invisible="1"/>
+                        <field name="contact_line"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <!--actions opening views on models-->
+        <record model="ir.actions.act_window" id="to_do.action_window">
+            <field name="name">Batch</field>
+            <field name="res_model">to_do.to_do</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem name="To-Do"
+                  id="to_do.menu_root"
+                  groups="to_do.group_user_admin,to_do.group_user_agent"/>
+
+        <menuitem name="batch Assignation"
+                  id="to_do.batch_assignation"
+                  parent="to_do.menu_root"
+                  action="to_do.action_window"
+                  groups="to_do.group_user_admin"
+        />
+
+        <menuitem name="To Do" id="to_do.todo"
+                  parent="to_do.menu_root"
+                  action="to_do.action_window"
+                  groups="to_do.group_user_agent"/>
+
+    </data>
+</odoo>
