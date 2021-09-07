@@ -122,7 +122,7 @@ class ToDo(models.Model):
 class RepartnerInherit(models.Model):
     _inherit = 'res.partner'
 
-    users_assignations_id = fields.Many2one('res.users', 'partner_id')
+    users_assignations_id = fields.Many2one('res.users', 'User Assignation')
 
 
 class UsersInherit(models.Model):

@@ -57,7 +57,7 @@
                   id="to_do.batch_assignation"
                   parent="to_do.menu_root"
                   action="to_do.action_window"
-                  groups="to_do.group_user_admin"
+                  groups="to_do.group_user_agent"
         />
 
         <menuitem name="To Do" id="to_do.todo"

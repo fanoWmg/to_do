@@ -7,14 +7,19 @@
 
         <record model="res.groups" id="group_user_agent">
             <field name="name">AGENT</field>
-            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
         </record>
-
+<!--
         <record id="admin_rule" model="ir.rule">
             <field name="name">show only his partner</field>
             <field name="model_id" ref="crm.model_crm_lead"/>
             <field name="domain_force">[('partner_id.users_assignations_id.id', '=', 'user_id.id')]</field>
             <field name="groups" eval="[(4, ref('to_do.group_user_agent'))]"/>
-        </record>
+        </record>-->
+       <!-- <record id="agent_rule" model="ir.rule">
+            <field name="name">show only his partner</field>
+            <field name="model_id" ref="base.model_res_partner"/>
+            <field name="domain_force">[('partner_id.users_assignations_id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('to_do.group_user_agent'))]"/>
+        </record>-->
     </data>
 </odoo>
