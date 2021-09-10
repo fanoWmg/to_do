@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="contact_action_custom" model="ir.actions.server">
+        <field name="name">Contact server action</field>
+        <field name="model_id" ref="base.model_res_partner"/>
+        <field name="state">code</field>
+        <field name="code">action = model.action_menu_contact()</field>
+    </record>
+
+    <menuitem id="contacts.res_partner_menu_contacts"
+              name="Contacts"
+              parent="contacts.menu_contacts"
+              action="contact_action_custom"/>
+</odoo>

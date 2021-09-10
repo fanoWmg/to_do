@@ -3,6 +3,28 @@
 from odoo import models, fields, api
 
 
+class RepartnerInherit(models.Model):
+    _inherit = 'res.partner'
+
+    users_assignations_id = fields.Many2one('res.users', 'User Assignation')
+
+
+    def action_menu_contact(self):
+        user_has_groups_agent = self.user_has_groups('to_do.group_user_agents')
+        if user_has_groups_agent:
+            domain = [('users_assignations_id.id', '=', self.env.user.id)]
+        else:
+            domain = [(1, "=", 1)]
+        return {
+            'name': 'Contacts',
+            'domain': domain,
+            'type': 'ir.actions.act_window',
+            'res_model': 'res.partner',
+            'view_mode': 'kanban,tree,form,activity',
+            'context': {'default_is_company': True},
+        }
+
+
 class ToDo(models.Model):
     _name = 'to_do.to_do'
     _description = 'to_do.to_do'
@@ -117,12 +139,6 @@ class ToDo(models.Model):
 
         res = super(ToDo, self).write(vals)
         return res
-
-
-class RepartnerInherit(models.Model):
-    _inherit = 'res.partner'
-
-    users_assignations_id = fields.Many2one('res.users', 'User Assignation')
 
 
 class UsersInherit(models.Model):

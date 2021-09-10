@@ -1,2 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-ccess_to_do_to_do,access_to_do_to_do,model_to_do_to_do,base.group_user,1,1,1,1
+access_to_do_to_do_admin,access_to_do_to_do_admin_,model_to_do_to_do,to_do.group_user_admins,1,1,1,1
+access_to_do_to_do_agent,access_to_do_to_do_agent_,model_to_do_to_do,to_do.group_user_agents,1,0,0,0
+access_to_do_to_do_sup_admin,access_to_do_to_do_sup_admin_,model_to_do_to_do,to_do.group_user_super_admin,1,1,1,1

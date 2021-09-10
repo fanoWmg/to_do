@@ -19,7 +19,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'web', 'crm'],
+    'depends': ['base', 'web', 'crm', 'contacts'],
 
     # always loaded
     'data': [
@@ -27,6 +27,7 @@
         'security/security.xml',
         'views/views.xml',
         'views/crm_view_inherit.xml',
+        'views/res_partner_view.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

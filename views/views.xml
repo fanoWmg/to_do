@@ -23,13 +23,17 @@
                         <field name="state_level" invisible="1"/>
                         <button string="Draft" type="object" name="action_draft" class="oe_highlight"
                                 attrs="{'invisible': [('state', '=', 'draft')]}"
+                                groups="to_do.group_user_admins,to_do.group_user_super_admin"
                         />
-                        <button string="Assign" type="object" attrs="{'invisible': [('state', '=', 'assigned')]}"
-                                name="action_assigned" class="oe_highlight"/>
-                        <!--                        <button string="Assigned" type="object" name="action_assigned" class="oe_highlight"/>-->
-                        <button string="Execute" type="object" name="action_executed" class="oe_highlight"/>
-                        <button string="Remove" type="object" name="action_removed" class="oe_highlight"
+                        <button string="Assign" type="object"
+                                attrs="{'invisible': ['|', ('state', '=', 'assigned'), ('state', '=', 'removed')]}"
+                                name="action_assigned" class="oe_highlight"
+                                groups="to_do.group_user_admins,to_do.group_user_super_admin"/>
+                        <button string="Execute" type="object" name="action_executed" class="oe_highlight"
                                 attrs="{'invisible': ['|', ('state', '=', 'removed'), ('state', '=', 'draft')]}"/>
+                        <button string="Remove" type="object" name="action_removed" class="oe_highlight"
+                                attrs="{'invisible': ['|', ('state', '=', 'removed'), ('state', '=', 'draft')]}"
+                                groups="to_do.group_user_admins,to_do.group_user_super_admin"/>
                         <field name="state" widget="statusbar"/>
                     </header>
                     <group>
@@ -51,19 +55,18 @@
 
         <menuitem name="To-Do"
                   id="to_do.menu_root"
-                  groups="to_do.group_user_admin,to_do.group_user_agent"/>
-
-        <menuitem name="batch Assignation"
-                  id="to_do.batch_assignation"
-                  parent="to_do.menu_root"
-                  action="to_do.action_window"
-                  groups="to_do.group_user_agent"
+                  groups="to_do.group_user_admins,to_do.group_user_agents,to_do.group_user_super_admin"
         />
-
-        <menuitem name="To Do" id="to_do.todo"
+        <menuitem name="Batch Assignation" id="to_do.todo_batch_assignation"
                   parent="to_do.menu_root"
                   action="to_do.action_window"
-                  groups="to_do.group_user_agent"/>
+                  groups="to_do.group_user_admins,to_do.group_user_super_admin"
+        />
+        <menuitem name="To Do" id="to_do.todo_todo"
+                  parent="to_do.menu_root"
+                  action="to_do.action_window"
+                  groups="to_do.group_user_agents"
+        />
 
     </data>
 </odoo>
