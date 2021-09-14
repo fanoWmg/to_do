@@ -5,7 +5,7 @@
             <field name="name">to_do list</field>
             <field name="model">to_do.to_do</field>
             <field name="arch" type="xml">
-                <tree>
+                <tree delete="0">
                     <field name="name"/>
                     <field name="user_id"/>
                     <field name="create_date" string="Create Date"/>
@@ -18,27 +18,26 @@
             <field name="name">to_do Form</field>
             <field name="model">to_do.to_do</field>
             <field name="arch" type="xml">
-                <form string="To Do Form">
+                <form string="To Do Form" delete="0">
                     <header>
-                        <field name="state_level" invisible="1"/>
                         <button string="Draft" type="object" name="action_draft" class="oe_highlight"
-                                attrs="{'invisible': [('state', '=', 'draft')]}"
+                                attrs="{'invisible': [('state', 'in', ('draft', 'assigned', 'added_in_pipeline', 'removed'))]}"
                                 groups="to_do.group_user_admins,to_do.group_user_super_admin"
                         />
                         <button string="Assign" type="object"
-                                attrs="{'invisible': ['|', ('state', '=', 'assigned'), ('state', '=', 'removed')]}"
+                                attrs="{'invisible': [('state', 'in', ('assigned', 'added_in_pipeline'))]}"
                                 name="action_assigned" class="oe_highlight"
                                 groups="to_do.group_user_admins,to_do.group_user_super_admin"/>
-                        <button string="Execute" type="object" name="action_executed" class="oe_highlight"
-                                attrs="{'invisible': ['|', ('state', '=', 'removed'), ('state', '=', 'draft')]}"/>
+                        <button string="Add to pipeline" type="object" name="action_create_lead" class="oe_highlight"
+                                attrs="{'invisible': [('state', 'in', ('removed', 'draft', 'added_in_pipeline'))]}"/>
                         <button string="Remove" type="object" name="action_removed" class="oe_highlight"
                                 attrs="{'invisible': ['|', ('state', '=', 'removed'), ('state', '=', 'draft')]}"
                                 groups="to_do.group_user_admins,to_do.group_user_super_admin"/>
-                        <field name="state" widget="statusbar"/>
+                        <field name="state" widget="statusbar" statusbar_visible="state"/>
                     </header>
                     <group>
                         <field name="name"/>
-                        <field name="user_id"/>
+                        <field name="user_id" attr="{'readonly': [('state', '=', 'assigned')]}" options="{'no_create': [('state', '=', 'assigned')]}"/>
                         <field name="model_name" invisible="1"/>
                         <field name="contact_line"/>
                     </group>

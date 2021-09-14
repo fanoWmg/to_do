@@ -10,4 +10,14 @@
         <field name="name">SUPER-ADMIN</field>
     </record>
 
+    <record id="show_only_his_to_do_list" model="ir.rule">
+        <field name="name">show_only_his_to_do_list</field>
+        <field name="model_id" ref="to_do.model_to_do_to_do"/>
+        <field name="domain_force">[('user_id.id', '=', user.id), ('state', 'in', ('assigned', 'added_in_pipeline'))]</field>
+        <field name="groups" eval="[(4, ref('to_do.group_user_agents'))]"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_create" eval="0"/>
+        <field name="perm_write" eval="0"/>
+        <field name="perm_unlink" eval="0"/>
+    </record>
 </odoo>
