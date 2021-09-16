@@ -26,7 +26,6 @@
         'security/security.xml',
         'security/ir.model.access.csv',
         'views/views.xml',
-        'views/crm_view_inherit.xml',
         'views/res_partner_view.xml',
     ],
     # only loaded in demonstration mode

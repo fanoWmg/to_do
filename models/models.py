@@ -3,28 +3,6 @@
 from odoo import models, fields, api
 
 
-class RepartnerInherit(models.Model):
-    _inherit = 'res.partner'
-
-    users_assignations_id = fields.Many2many('res.users', 'partner_id', 'user_id', 'res_partner_user_assign_rel',
-                                             'User Assignation')
-
-    def action_menu_contact(self):
-        user_has_groups_agent = self.user_has_groups('to_do.group_user_agents')
-        if user_has_groups_agent:
-            domain = [('users_assignations_id.id', '=', self.env.user.id)]
-        else:
-            domain = [(1, "=", 1)]
-        return {
-            'name': 'Contacts',
-            'domain': domain,
-            'type': 'ir.actions.act_window',
-            'res_model': 'res.partner',
-            'view_mode': 'kanban,tree,form,activity',
-            'context': {'default_is_company': True},
-        }
-
-
 class ToDo(models.Model):
     _name = 'to_do.to_do'
     _description = 'to_do.to_do'
@@ -42,6 +20,10 @@ class ToDo(models.Model):
         string='state', default='draft')
 
     state_level = fields.Integer(default=0)
+
+    _sql_constraints = [
+        ('name', 'unique(name)', 'name must be unique !'),
+    ]
 
     # lead_id = fields.Many2one('crm.lead')
 
@@ -64,6 +46,11 @@ class ToDo(models.Model):
                 rec.env['res.partner'].browse(partner.id).write({
                     'users_assignations_id': [(3, rec.user_id.id)]
                 })
+            # remove pipeline too
+            # if rec.state == "added_in_pipeline":
+            #     crm_lead = rec.env['crm.lead'].search([('name', '=', rec.name), ('is_batch', '=', True)])
+            #     for crm in crm_lead:
+            #         crm.unlink()
             rec.write({'state': 'removed'})
             rec.user_id.write({'has_assigned': False})
 
@@ -75,6 +62,7 @@ class ToDo(models.Model):
                     'name': rec.name,
                     'partner_id': partner.id,
                     'type': 'opportunity',
+                    'is_batch': True,
                 })
 
     # @api.onchange('model_id')
@@ -150,11 +138,11 @@ class ToDo(models.Model):
                     self.env['res.partner'].browse(sc.id).write({
                         'users_assignations_id': [(3, self.user_id.id)]
                     })
+        # change crm name
+        if 'name' in vals and vals.get('name') and self.state == "added_in_pipeline":
+            lead = self.env['crm.lead'].search([('name', '=', self.name), ('is_batch', '=', True)])
+            for l in lead:
+                l.write({'name': vals.get('name')})
+
         res = super(ToDo, self).write(vals)
         return res
-
-
-class UsersInherit(models.Model):
-    _inherit = 'res.users'
-
-    has_assigned = fields.Boolean()
